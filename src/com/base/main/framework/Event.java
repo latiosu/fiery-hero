@@ -6,7 +6,6 @@ import com.base.main.window.Handler;
 import java.util.LinkedList;
 
 public class Event {
-
     private static int enemyCount0;
     private static int enemyCount1;
     private static int enemyCount2;
