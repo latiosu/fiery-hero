@@ -2,6 +2,7 @@ package com.base.main.window;
 
 import com.base.main.framework.GameObject;
 import com.base.main.framework.ObjectId;
+import com.base.main.objects.Block;
 import com.base.main.objects.Player;
 import java.awt.Graphics;
 import java.util.LinkedList;
@@ -9,6 +10,7 @@ import java.util.LinkedList;
 public class Handler {
 
     public LinkedList<GameObject> object = new LinkedList<GameObject>();
+    public GameObject[][] blockArray = new GameObject[512][512];
 
     private GameObject tempObject;
     public Player playerObject;
@@ -36,6 +38,14 @@ public class Handler {
                 tempObject.render(g);
             }
         }
+    }
+    
+    public void addBlock(GameObject object,int x, int y) {
+        this.blockArray[x][y] = object;
+    }
+    
+    public void removeBlock(GameObject object,int x, int y) {
+        this.blockArray[x][y] = object;
     }
 
     public void addObject(GameObject object) {

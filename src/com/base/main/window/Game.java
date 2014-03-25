@@ -184,15 +184,15 @@ public class Game extends Canvas implements Runnable {
                 int blue = (pixel) & 0xff;
                 // Add dirt block for white block
                 if (red == 255 && green == 255 && blue == 255) {
-                    handler.addObject(new Block(xx * 32, yy * 32, 0, ObjectId.Block));
+                    handler.addBlock(new Block(xx * 32, yy * 32, 0, ObjectId.Block),xx,yy);
                 }
                 // Add grass block for grey block
                 if (red == 128 && green == 128 && blue == 128) {
-                    handler.addObject(new Block(xx * 32, yy * 32, 1, ObjectId.Block));
+                    handler.addBlock(new Block(xx * 32, yy * 32, 1, ObjectId.Block),xx,yy);
                 }
                 // Add invisible block 1 for green block
                 if (red == 0 && green == 255 && blue == 0) {
-                    handler.addObject(new Block(xx * 32, yy * 32, 2, ObjectId.Frame));
+                    handler.addBlock(new Block(xx * 32, yy * 32, 2, ObjectId.Frame),xx,yy);
                 }
                 // Add enemy for red block
                 if (red == 255 && green == 0 && blue == 0) {

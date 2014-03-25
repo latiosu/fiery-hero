@@ -25,7 +25,7 @@ public class MouseInput extends MouseAdapter {
             if (mx >= 480 && mx <= 630) {
                 if (my >= 100 && my <= 160) { // start button
                     handler.object.clear(); // Empty objects list
-                    game.loadLevel("/level.png");
+                    game.loadLevel("/level2.png");
                     Game.State = Game.STATE.GAME;
                 }
                 if (my >= 260 && my <= 320) { // levels button
