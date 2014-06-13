@@ -3,16 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/window/Physics.java</file>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/objects/Projectile.java</file>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/objects/Enemy.java</file>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/framework/MouseInput.java</file>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/framework/Event.java</file>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/objects/Powerup.java</file>
+            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/window/Camera.java</file>
+            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/window/UI.java</file>
             <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/window/Game.java</file>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/objects/Block.java</file>
             <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/window/Handler.java</file>
-            <file>file:/C:/Users/Chocobo/Desktop/Creations/Fiery%20Hero/src/com/base/main/objects/Player.java</file>
         </group>
     </open-files>
 </project-private>

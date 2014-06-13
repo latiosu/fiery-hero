@@ -26,6 +26,9 @@ public class Player extends GameObject {
     Animation invulnWalkRightAnim;
     Timer t;
 
+    public int bitX = 0;
+    public int bitBotY = 0;
+    public int bitTopY = 0;
     public boolean isClimbing = false;
     public boolean isWalking = false;
     public boolean isHit = false;
@@ -50,6 +53,7 @@ public class Player extends GameObject {
         direction = 0;
         HP = 100;
         isAlive = true;
+        updateBitPosition();
     }
 
     @Override
@@ -58,7 +62,7 @@ public class Player extends GameObject {
             HP = 0;
             isInvulnerable = true;
             isAlive = false;
-            Game.State = Game.STATE.GAMEOVER;
+            Game.setState(Game.STATE.GAMEOVER);
         }
 
         x += velX;
@@ -71,6 +75,7 @@ public class Player extends GameObject {
                 velY = MAX_SPEED;
             }
         }
+        updateBitPosition();
         Collision(object);
         removeInvuln();
         walkLeftAnim.runAnimation();
@@ -80,44 +85,46 @@ public class Player extends GameObject {
     }
 
     private void Collision(LinkedList<GameObject> object) {
-        for (int i = 0; i < handler.object.size(); i++) {
-            GameObject tempObject = handler.object.get(i);
-
-            // Player physics
-            if ((tempObject.getId() == ObjectId.Block || tempObject.getId() == ObjectId.Frame)) {
-                if (getBoundsTop().intersects(tempObject.getBounds())) {
-                    y = tempObject.getY() + 32;
-                    velY = 0;
-                    falling = false;
-                    jumping = true;
-                }
-
-                if (getBoundsBottom().intersects(tempObject.getBounds())) {
-                    y = tempObject.getY() - height;
-                    velY = 0;
-                    falling = false;
-                    jumping = false;
-                    isDoubleJumping = false;
-                } else {
-                    falling = true;
-                }
-
-                // Right
-                if (getBoundsRight().intersects(tempObject.getBounds())) {
-                    x = tempObject.getX() - width;
-
-                }
-
-                // Left
-                if (getBoundsLeft().intersects(tempObject.getBounds())) {
-                    x = tempObject.getX() + 32;
-
-                }
+        // Frame collisions
+        
+        
+        // Static object collision
+        if (handler.blockCollision(bitX, bitBotY) || handler.blockCollision(bitX + 1, bitBotY)) {
+            if (falling) {
+                y = bitBotY * 32 - height;
+                velY = 0;
             }
+            falling = false;
+            jumping = false;
+            isDoubleJumping = false;
+        } else {
+            falling = true;
+        }
+        if (handler.blockCollision(bitX, bitTopY) || handler.blockCollision(bitX + 1, bitTopY)) {
+            y = bitTopY * 32 + 32;
+            velY = 0;
+            falling = true;
+            jumping = false;
 
+        }
+        // Right
+        if (handler.blockCollision(bitX + 1, bitBotY - 1)) {
+            x = bitX * 32;
+        }
+
+        // Left
+        if (handler.blockCollision(bitX, bitBotY - 1)) {
+            x = (bitX + 1) * 32;
+        }
+
+        // Dynamic object collision
+        for (int i = 0;
+                i < handler.object.size();
+                i++) {
+            GameObject tempObject = handler.object.get(i);
+            // Enemy objects
             if (tempObject.getId() == ObjectId.Enemy) {
                 if (getBounds().intersects(tempObject.getBounds()) && !isInvulnerable) {
-                    Enemy e = (Enemy) handler.object.get(i);
 //                    if (e.getDirection() == 0) {
 //                        velX = -6;
 //                        velY = -2;
@@ -142,6 +149,15 @@ public class Player extends GameObject {
 
     @Override
     public void render(Graphics g) {
+//        // Player collision boxes
+//        g.setColor(Color.red);
+//        g.fillRect(bitX*32, (bitBotY-1)*32, 32, 32);
+//        g.setColor(Color.blue);
+//        g.fillRect((bitX+1)*32, (bitBotY-1)*32, 32, 32);
+//        g.setColor(Color.red);
+//        g.fillRect(bitX*32, bitBotY*32, 32, 32);
+//        g.setColor(Color.blue);
+//        g.fillRect((bitX+1)*32, bitBotY*32, 32, 32);
         if (isInvulnerable) {
             if (velX != 0) {
                 if (direction == 0) {
@@ -175,7 +191,6 @@ public class Player extends GameObject {
                 }
             }
         }
-
     }
 
     public void removeInvuln() {
@@ -184,6 +199,15 @@ public class Player extends GameObject {
             isHit = false;
             t.setStartTime();
         }
+    }
+
+    private void updateBitPosition() {
+//        float floatX = this.x / 32;
+//        float floatY = (this.y+height) / 32;
+        this.bitX = (int) Math.floor(this.x / 32);
+        this.bitBotY = (int) Math.floor((this.y + height) / 32);
+        this.bitTopY = (int) Math.floor((this.y) / 32);
+//        System.out.println("floats: " + floatX + " " + floatY + " | " + bitX + " " + bitY);
     }
 
     public void setDoubleJumping(boolean b) {

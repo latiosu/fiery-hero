@@ -21,32 +21,30 @@ public class MouseInput extends MouseAdapter {
         int key = e.getButton();
         int mx = e.getX();
         int my = e.getY();
-        if (Game.State == Game.STATE.MENU) {
+        if (Game.getState() == Game.STATE.MENU) {
             if (mx >= 480 && mx <= 630) {
                 if (my >= 100 && my <= 160) { // start button
-                    handler.object.clear(); // Empty objects list
-                    game.loadLevel("/level2.png");
-                    Game.State = Game.STATE.GAME;
+                    game.enterGame();
                 }
                 if (my >= 260 && my <= 320) { // levels button
-                    Game.State = Game.STATE.LEVELS;
+                    Game.setState(Game.STATE.LEVELS);
                 }
                 if (my >= 420 && my <= 480) { // exit button
                     System.exit(0);
                 }
             }
         }
-        if (Game.State == Game.STATE.PAUSE && !menuPressed) {
+        if (Game.getState() == Game.STATE.PAUSE && !menuPressed) {
             if (mx >= 340 && mx <= 480 && my >= 190 && my <= 240) { // Resume
-                Game.State = Game.STATE.GAME;
+                Game.setState(Game.STATE.GAME);
             }
             if (mx >= 280 && mx <= 530 && my >= 310 && my <= 360) { // Menu
                 menuPressed = true;
             }
         }
-        if (Game.State == Game.STATE.PAUSE && menuPressed) {
+        if (Game.getState() == Game.STATE.PAUSE && menuPressed) {
             if (mx >= 250 && mx <= 350 && my >= 290 && my <= 340) { // Yea
-                Game.State = Game.STATE.MENU;
+                Game.setState(Game.STATE.MENU);
                 menuPressed = false;
             }
             if (mx >= 435 && mx <= 535 && my >= 290 && my <= 340) { // Nah
@@ -54,18 +52,18 @@ public class MouseInput extends MouseAdapter {
             }
         }
 
-        if (Game.State == Game.STATE.LEVELS) {
+        if (Game.getState() == Game.STATE.LEVELS) {
             // Add level selections here
 
             if (mx >= 330 && mx <= 480 && my >= 430 && my <= 480) { // Back
-                Game.State = Game.STATE.MENU;
+                Game.setState(Game.STATE.MENU);
                 menuPressed = false;
             }
         }
 
-        if (Game.State == Game.STATE.GAMEOVER) {
+        if (Game.getState() == Game.STATE.GAMEOVER) {
             if (mx >= 280 && mx <= 530 && my >= 410 && my <= 460) { // Menu
-                Game.State = Game.STATE.MENU;
+                Game.setState(Game.STATE.MENU);
             }
         }
     }

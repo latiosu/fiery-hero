@@ -56,7 +56,7 @@ public class UI {
         if (!t.checkTime()) {
             g.setColor(Color.white);
             g.setFont(font20);
-            g.drawString("Use arrows/WASD to move, Space to jump, J to shoot", 180, 40);
+            g.drawString("Use arrows/WASD to move, Space to shoot", 200, 40);
             g.drawString("ESC to pause", 350, 70);
 
             Color fillColour = new Color(128, 128, 128, 80);
@@ -73,8 +73,9 @@ public class UI {
         g.setColor(Color.white);
         g.drawString("Score: " + (long) totalScore, 10, 600);
         g.drawString("Enemies: " + Event.getCurrentEnemyCount(), 11, 581);
+        g.drawString("FPS: " + Game.fps, 720, 600);
 
-        if (Game.State == Game.STATE.GAMEOVER) {
+        if (Game.getState() == Game.STATE.GAMEOVER) {
             // Dim screen
             g.setColor(transparentGray);
             g.fillRect(0, 0, 800 + 10, 600 + 10);
