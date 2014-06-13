@@ -41,18 +41,12 @@ public class Projectile extends GameObject {
         if (x > px + Game.WIDTH / 2 || x < px - Game.WIDTH / 2) {
             handler.object.remove(this);
         }
-        Collision(object);
+        Collision();
     }
 
-    private void Collision(LinkedList<GameObject> object) {
-        for (int i = 0; i < handler.object.size(); i++) {
-            GameObject tempObject = handler.object.get(i);
-
-            if (tempObject.getId() == ObjectId.Block || tempObject.getId() == ObjectId.Frame) {
-                if(getBounds().intersects(tempObject.getBounds())) {
-                    handler.removeObject(this);
-                }
-            }
+    private void Collision() {
+        if(handler.blockCollision(this.x, this.y)) {
+            handler.removeObject(this);
         }
     }
 

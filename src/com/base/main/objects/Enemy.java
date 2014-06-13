@@ -26,6 +26,11 @@ public class Enemy extends GameObject {
     private int healthSize = 50; // for health bar in px
     private int jumpRadius; // Radius of block to jump in px
     private double jumpThreshold; // Only used for rabbit enemy
+
+    public int bitX = 0;
+    public int bitBotY = 0;
+    public int bitTopY = 0;
+
     private boolean damaged = false;
     private Handler handler;
     Texture tex;
@@ -38,6 +43,7 @@ public class Enemy extends GameObject {
         this.handler = handler;
         tex = Game.getInstance();
         lastX = x;
+        updateBitPosition();
     }
 
     private void defineEnemy(int type) {
@@ -95,52 +101,56 @@ public class Enemy extends GameObject {
             }
         }
         updateRate();
+        updateBitPosition();
         Collision(object);
     }
 
     private void Collision(LinkedList<GameObject> object) {
+        
+
+        // Block collisions
+        if (handler.blockCollision(bitX, bitBotY) || handler.blockCollision(bitX + 1, bitBotY)) {
+            if (falling) {
+                y = bitBotY * 32 - height;
+                velY = 0;
+            }
+            falling = false;
+            jumping = false;
+        } else {
+            falling = true;
+        }
+        if (handler.blockCollision(bitX, bitTopY) || handler.blockCollision(bitX + 1, bitTopY)) {
+            y = bitTopY * 32 + 32;
+            velY = 0;
+            falling = true;
+            jumping = false;
+
+        }
+        // Right
+        if (handler.blockCollision(bitX + 1, bitBotY - 1)) {
+            x = bitX * 32;
+        }
+
+        // Left
+        if (handler.blockCollision(bitX, bitBotY - 1)) {
+            x = (bitX + 1) * 32;
+        }
+
+        // Jump when 64px away from block
+//        if (getJumpBounds().intersects(tempBlock.getBounds()) && !isJumping()
+//                && tempBlock.getId() != ObjectId.Frame) {
+        if (handler.blockCollision(bitX-1, bitBotY-1) || handler.blockCollision(bitX+1, bitBotY-1)) {
+            setJumping(true);
+            jump(type);
+        }
+
+        // Check with dynamic objects
         for (int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
-
-            if ((tempObject.getId() == ObjectId.Block || tempObject.getId() == ObjectId.Frame) && type != 2) {
-
-                if (getBoundsTop().intersects(tempObject.getBounds())) {
-                    y = tempObject.getY() + 32;
-                    velY = 0;
-                    falling = false;
-                    jumping = true;
-                }
-
-                if (getBoundsBottom().intersects(tempObject.getBounds())) {
-                    y = tempObject.getY() - height;
-                    velY = 0;
-                    falling = false;
-                    jumping = false;
-                } else {
-                    falling = true;
-                }
-
-                // Right
-                if (getBoundsRight().intersects(tempObject.getBounds())) {
-                    x = tempObject.getX() - 32;
-                }
-
-                // Left
-                if (getBoundsLeft().intersects(tempObject.getBounds())) {
-                    x = tempObject.getX() + 32;
-                }
-                
-                // Jump when 64px away from block
-                if (getJumpBounds().intersects(tempObject.getBounds()) && !isJumping()
-                        && tempObject.getId() != ObjectId.Frame) {
-                    setJumping(true);
-                    jump(type);
-                }
-            }
-            if (tempObject.getId() == ObjectId.Projectile) {
+            if (tempObject.getId() == ObjectId.Projectile) { // Projectile
                 if (getBounds().intersects(tempObject.getBounds())) {
                     handler.removeObject(tempObject);
-                    updateHealth(5); // value is basic projectile damage
+                    updateHealth(4); // value is basic projectile damage
                     damaged = true;
                 }
             }
@@ -176,6 +186,15 @@ public class Enemy extends GameObject {
         showHealthBar(g);
     }
 
+    private void updateBitPosition() {
+//        float floatX = this.x / 32;
+//        float floatY = (this.y+height) / 32;
+        this.bitX = (int) Math.floor(this.x / 32);
+        this.bitBotY = (int) Math.floor((this.y + height) / 32);
+        this.bitTopY = (int) Math.floor((this.y) / 32);
+//        System.out.println("floats: " + floatX + " " + floatY + " | " + bitX + " " + bitY);
+    }
+
     private void updateHealth(int damage) {
         int divisor = maxHP / damage;
         int value = 50 / divisor;
@@ -208,8 +227,9 @@ public class Enemy extends GameObject {
                 velX = -speed;
             }
             if (type == 1) {
-                if (Math.random() <= jumpThreshold)
+                if (Math.random() <= jumpThreshold) {
                     jump(type);
+                }
             }
         } else {
             if (x < handler.playerObject.getX()) {
@@ -235,10 +255,10 @@ public class Enemy extends GameObject {
             velY = -8;
         }
         if (type == 1) {
-            velY = -6;
+            velY = -7;
         }
         if (type == 2) {
-            
+
         }
     }
 
@@ -279,11 +299,5 @@ public class Enemy extends GameObject {
 
     public Rectangle getBoundsLeft() {
         return new Rectangle((int) x, (int) y + 5, 5, (int) height - 10);
-    }
-    public Rectangle getJumpBounds() {
-        if(direction==0)
-            return new Rectangle((int)(x-jumpRadius),(int)(y+(height/2)),jumpRadius,(int)((height/2)-4));
-        else
-            return new Rectangle((int)(x+width),(int)(y+(height/2)),jumpRadius,(int)((height/2)-4));
     }
 }

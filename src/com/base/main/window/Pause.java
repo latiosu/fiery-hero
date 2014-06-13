@@ -1,7 +1,6 @@
 package com.base.main.window;
 
 import com.base.main.framework.MouseInput;
-import com.base.main.framework.Texture;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
